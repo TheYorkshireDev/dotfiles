@@ -1,0 +1,12 @@
+# Local identity and machine-specific overrides — never commit these
+.gitconfig.local
+.zshrc.local
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Vim
+*.swp
+*.swo

@@ -1,0 +1,29 @@
+[core]
+    editor = vim
+    autocrlf = input
+
+[commit]
+    gpgsign = true
+
+[pull]
+    rebase = true
+
+[push]
+    default = current
+    autoSetupRemote = true
+
+[fetch]
+    prune = true
+
+[diff]
+    colorMoved = zebra
+
+[alias]
+    lg = log --oneline --graph --decorate --all
+    st = status -sb
+    undo = reset --soft HEAD~1
+    aliases = config --get-regexp alias
+
+# Load local identity — name, email. This file is NOT committed.
+[include]
+    path = ~/.gitconfig.local
