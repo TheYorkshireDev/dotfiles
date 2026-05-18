@@ -34,6 +34,21 @@ fi
 echo " Installing packages from Brewfile..."
 brew bundle --file="$DOTFILES/Brewfile" --no-upgrade
 
+# Logitech Options+
+# Installed separately from the Brewfile due to a known SIP conflict where
+# Homebrew's post-install chown step fails on the signed .app bundle.
+# --no-quarantine bypasses the postflight ownership change that triggers the error.
+# See: https://github.com/Homebrew/homebrew-cask/issues/187722
+echo " Installing Logitech Options+..."
+if [ -d "/Applications/logioptionsplus.app" ]; then
+    echo " Logitech Options+ already installed, skipping."
+else
+    brew install --cask --no-quarantine logi-options+ || {
+        echo " Logitech Options+ install encountered errors (likely SIP/chown)."
+        echo " The app should still be usable — reboot if it doesn't open."
+    }
+fi
+
 # macOS defaults
 echo " Applying macOS defaults..."
 bash "$DOTFILES/macos.sh"
@@ -54,7 +69,6 @@ echo " Installing VS Code extensions..."
 if command -v code &>/dev/null; then
     installed=$(code --list-extensions 2>/dev/null | tr '[:upper:]' '[:lower:]')
     while IFS= read -r extension; do
-        # Skip empty lines and comments
         [[ -z "$extension" || "$extension" == \#* ]] && continue
         if echo "$installed" | grep -qi "^${extension}$"; then
             echo "  VSCODE => $extension already installed."
@@ -91,5 +105,5 @@ else
 fi
 
 echo ""
-echo " Bootstrap complete. Restart your terminal."
+echo " Bootstrap complete. Reboot recommended (required for Logitech Options+)."
 echo ""
