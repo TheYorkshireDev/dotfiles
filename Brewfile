@@ -23,6 +23,7 @@ cask "sketch"
 cask "visual-studio-code"
 cask "gpg-suite"
 cask "docker"
+cask "logi-options+"
 
 # ── Mac App Store ──────────────────────────────────────────────────────────────
 mas "Xcode", id: 497799835
