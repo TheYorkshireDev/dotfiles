@@ -5,10 +5,10 @@ DOTFILES="$HOME/.dotfiles"
 
 echo ""
 echo "  macOS dotfiles bootstrap"
-echo " =================================="
+echo "=================================="
 echo ""
 
-# ── Homebrew ──────────────────────────────────────────────────────────────────
+# Homebrew
 if ! command -v brew &>/dev/null; then
     echo " Installing Homebrew..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -21,7 +21,7 @@ if [[ $(uname -m) == "arm64" ]]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
-# ── Clone dotfiles ─────────────────────────────────────────────────────────────
+# Clone dotfiles
 if [ ! -d "$DOTFILES" ]; then
     echo " Cloning dotfiles..."
     git clone https://github.com/TheYorkshireDev/dotfiles "$DOTFILES"
@@ -30,22 +30,50 @@ else
     git -C "$DOTFILES" pull
 fi
 
-# ── Homebrew Bundle ───────────────────────────────────────────────────────────
+# Homebrew Bundle
 echo " Installing packages from Brewfile..."
 brew bundle --file="$DOTFILES/Brewfile" --no-upgrade
 
-# ── macOS defaults ────────────────────────────────────────────────────────────
+# macOS defaults
 echo " Applying macOS defaults..."
 bash "$DOTFILES/macos.sh"
 
-# ── Stow dotfiles ─────────────────────────────────────────────────────────────
+# Firefox extensions
+echo " Installing Firefox extensions via enterprise policy..."
+FIREFOX_DISTRIBUTION="/Applications/Firefox.app/Contents/Resources/distribution"
+if [ -d "/Applications/Firefox.app" ]; then
+    mkdir -p "$FIREFOX_DISTRIBUTION"
+    cp "$DOTFILES/firefox/policies.json" "$FIREFOX_DISTRIBUTION/policies.json"
+    echo " Firefox policies.json written. Extensions will install on first launch."
+else
+    echo " Firefox not found, skipping. Run bootstrap again after installing Firefox."
+fi
+
+# VS Code extensions
+echo " Installing VS Code extensions..."
+if command -v code &>/dev/null; then
+    installed=$(code --list-extensions 2>/dev/null | tr '[:upper:]' '[:lower:]')
+    while IFS= read -r extension; do
+        # Skip empty lines and comments
+        [[ -z "$extension" || "$extension" == \#* ]] && continue
+        if echo "$installed" | grep -qi "^${extension}$"; then
+            echo "  VSCODE => $extension already installed."
+        else
+            code --install-extension "$extension" --force
+        fi
+    done < "$DOTFILES/vscode/extensions.txt"
+else
+    echo " VS Code 'code' CLI not found, skipping. Ensure 'code' is in PATH and re-run."
+fi
+
+# Stow dotfiles
 echo " Symlinking dotfiles with Stow..."
 cd "$DOTFILES"
 stow git
 stow zsh
 stow starship
 
-# ── Git local identity ────────────────────────────────────────────────────────
+# Git local identity
 if [ ! -f "$HOME/.gitconfig.local" ]; then
     echo ""
     echo " Git identity setup (stored in ~/.gitconfig.local, not committed)"

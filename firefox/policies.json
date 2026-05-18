@@ -1,0 +1,18 @@
+{
+  "policies": {
+    "ExtensionSettings": {
+      "firefox@dashlane.com": {
+        "installation_mode": "normal_installed",
+        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/dashlane/latest.xpi"
+      },
+      "firefox@ghostery.com": {
+        "installation_mode": "normal_installed",
+        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/ghostery/latest.xpi"
+      },
+      "grammarly@grammarly.com": {
+        "installation_mode": "normal_installed",
+        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/grammarly-1/latest.xpi"
+      }
+    }
+  }
+}

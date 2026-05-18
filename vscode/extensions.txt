@@ -1,0 +1,15 @@
+# VS Code Extensions
+# Format: publisher.extensionname
+# Find the ID on the marketplace URL: marketplace.visualstudio.com/items?itemName=<ID>
+
+# Terraform
+hashicorp.terraform
+
+# Editor config
+editorconfig.editorconfig
+
+# Docker
+ms-azuretools.vscode-docker
+
+# Icons
+vscode-icons-team.vscode-icons
