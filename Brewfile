@@ -1,5 +1,3 @@
-tap "homebrew/bundle"
-
 # ── CLI tools ──────────────────────────────────────────────────────────────────
 brew "awscli"
 brew "azure-cli"
@@ -7,13 +5,12 @@ brew "git"
 brew "gnupg"
 brew "go"
 brew "node"
-brew "terraform"
+brew "tfenv"
 brew "starship"
 brew "mas"
 brew "stow"
 
 # ── Applications ───────────────────────────────────────────────────────────────
-cask "dashlane"
 cask "keepassxc"
 cask "firefox"
 cask "google-chrome"
